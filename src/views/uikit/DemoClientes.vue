@@ -1,93 +1,103 @@
 <script setup>
 import { ref } from 'vue';
 
-const nombre = ref('Diego');
-const apellidoPaterno = ref('Pineda');
-const apellidoMaterno = ref('Gumeta');
-const fechaNacimiento = ref('22/08/1992');
-const rfc = ref('ROMS920822MCSRRS09');
+// 1. Variables del Formulario (se actualizan mientras escribes)
+const inputNombre = ref('Diego');
+const inputPaterno = ref('Pineda');
+const inputMaterno = ref('Gumeta');
+const inputFecha = ref('22/08/1992');
+const inputRfc = ref('ROMS920822MCSRRS09');
 
+// 2. Variables de la Tarjeta (solo se actualizan al dar clic en Generar)
+const cardNombre = ref('Diego');
+const cardPaterno = ref('Pineda');
+const cardMaterno = ref('Gumeta');
+const cardRfc = ref('ROMS920822MCSRRS09');
+
+// Variable para la URL de la imagen del QR
+const qrUrl = ref(`https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=ROMS920822MCSRRS09`);
+
+// 3. Función que transfiere los datos y actualiza el QR
 const generarRFC = () => {
-    console.log('Generando RFC para:', nombre.value);
+    // Pasar los datos del formulario a la tarjeta
+    cardNombre.value = inputNombre.value;
+    cardPaterno.value = inputPaterno.value;
+    cardMaterno.value = inputMaterno.value;
+    cardRfc.value = inputRfc.value;
+
+    // Crear la información que guardará el QR (puedes poner lo que quieras)
+    const datosParaQR = `ID:${cardRfc.value} | Nombre:${cardNombre.value} ${cardPaterno.value}`;
+
+    // Actualizar la imagen del QR de forma dinámica
+    qrUrl.value = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(datosParaQR)}`;
 };
 </script>
 
 <template>
-    <!-- Contenedor Flexbox a prueba de fallos -->
     <div class="custom-layout">
-        <!-- COLUMNA IZQUIERDA: FORMULARIO -->
         <div class="custom-col">
             <div class="card">
                 <h5 class="mb-4">GENERAR EL RFC DE UNA PERSONA</h5>
 
                 <div class="custom-field">
                     <label for="nombre" class="font-medium text-sm">Nombre(s):</label>
-                    <InputText id="nombre" v-model="nombre" class="full-width-input" />
+                    <InputText id="nombre" v-model="inputNombre" class="full-width-input" />
                 </div>
 
                 <div class="custom-field">
                     <label for="paterno" class="font-medium text-sm">Apellido Paterno:</label>
-                    <InputText id="paterno" v-model="apellidoPaterno" class="full-width-input" />
+                    <InputText id="paterno" v-model="inputPaterno" class="full-width-input" />
                 </div>
 
                 <div class="custom-field">
                     <label for="materno" class="font-medium text-sm">Apellido Materno:</label>
-                    <InputText id="materno" v-model="apellidoMaterno" class="full-width-input" />
+                    <InputText id="materno" v-model="inputMaterno" class="full-width-input" />
                 </div>
 
                 <div class="custom-field">
                     <label for="fecha" class="font-medium text-sm">Fecha Nacimiento:</label>
-                    <InputText id="fecha" v-model="fechaNacimiento" class="full-width-input" />
+                    <InputText id="fecha" v-model="inputFecha" class="full-width-input" />
                 </div>
 
                 <div class="custom-field">
                     <label for="rfc" class="font-medium text-sm">RFC:</label>
-                    <InputText id="rfc" v-model="rfc" class="full-width-input" />
+                    <InputText id="rfc" v-model="inputRfc" class="full-width-input" />
                 </div>
 
                 <div class="mt-4">
-                    <!-- En la nueva versión se usa severity="success", agregamos la clase anterior por si acaso -->
                     <Button label="GENERAR" severity="success" class="full-width-input p-button-success" @click="generarRFC" />
                 </div>
             </div>
         </div>
 
-        <!-- COLUMNA DERECHA: TARJETA DIGITAL -->
         <div class="custom-col">
-            <!-- Forzamos el centrado vertical y horizontal con estilos en línea para evitar bloqueos del framework -->
             <div class="card" style="height: 100%; display: flex; flex-direction: column; align-items: center">
                 <h5 style="align-self: flex-start; width: 100%; margin-bottom: 2rem">TARJETA DIGITAL</h5>
 
-                <!-- Gafete -->
                 <div class="id-card-wrapper">
-                    <!-- Encabezado -->
                     <div class="id-header">
                         <span class="font-bold block text-xl">UNACH</span>
                         <span class="text-xs mt-1" style="font-weight: 300">Por la conciencia de la necesidad de servir</span>
                     </div>
 
-                    <!-- Avatar centrado -->
                     <div class="id-avatar-container">
                         <div class="id-avatar">
                             <i class="pi pi-user text-4xl" style="color: var(--text-color)"></i>
                         </div>
                     </div>
 
-                    <!-- Datos de la Persona -->
                     <div class="id-body">
                         <h2 class="m-0 text-xl font-bold uppercase mt-2" style="color: var(--text-color)">
-                            {{ nombre }} <br />
-                            {{ apellidoPaterno }} {{ apellidoMaterno }}
+                            {{ cardNombre }} <br />
+                            {{ cardPaterno }} {{ cardMaterno }}
                         </h2>
                         <span class="block mt-2 mb-3 text-500 font-medium">Empleado</span>
 
-                        <div class="font-bold text-sm" style="color: var(--text-color)">ID : {{ rfc }}</div>
+                        <div class="font-bold text-sm" style="color: var(--text-color)">ID : {{ cardRfc }}</div>
                     </div>
 
-                    <!-- Código de Barras -->
-                    <div class="id-barcode pb-3">
-                        <div class="barcode-lines">|| ||||| | ||| |||| || |</div>
-                        <span class="text-xs mt-2 text-500 block">0 12345 67890 12345 7</span>
+                    <div class="id-qr-section pb-3">
+                        <img :src="qrUrl" alt="Código QR del empleado" class="qr-image" />
                     </div>
 
                     <div class="id-footer"></div>
@@ -98,10 +108,9 @@ const generarRFC = () => {
 </template>
 
 <style scoped>
-/* --- 1. CSS PARA EL DISEÑO A COLUMNAS (REEMPLAZA AL GRID) --- */
 .custom-layout {
     display: flex;
-    flex-direction: column; /* En celulares se apila */
+    flex-direction: column;
     gap: 1.5rem;
     width: 100%;
 }
@@ -111,14 +120,12 @@ const generarRFC = () => {
     width: 100%;
 }
 
-/* Cuando la pantalla es mayor a 992px (Laptops/Monitores), se divide a la mitad */
 @media (min-width: 992px) {
     .custom-layout {
         flex-direction: row;
     }
 }
 
-/* --- 2. CSS PARA LOS INPUTS --- */
 .custom-field {
     display: flex;
     flex-direction: column;
@@ -130,7 +137,6 @@ const generarRFC = () => {
     width: 100% !important;
 }
 
-/* --- 3. CSS PARA LA TARJETA DIGITAL --- */
 .id-card-wrapper {
     width: 100%;
     max-width: 320px;
@@ -177,19 +183,21 @@ const generarRFC = () => {
     padding: 1rem;
 }
 
-.id-barcode {
+/* NUEVOS ESTILOS PARA EL QR */
+.id-qr-section {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    margin-top: 5px;
 }
 
-.barcode-lines {
-    font-size: 1.8rem;
-    font-weight: 900;
-    letter-spacing: 2px;
-    transform: scaleY(1.5);
-    color: var(--text-color);
-    margin-top: 10px;
+.qr-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    padding: 5px;
+    background-color: white; /* Asegura que el QR se lea bien en modo oscuro */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .id-footer {
