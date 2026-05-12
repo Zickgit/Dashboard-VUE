@@ -24,6 +24,11 @@ const router = createRouter({
                     component: () => import('@/views/uikit/DemoClientes.vue')
                 },
                 {
+                    path: '/uikit/puntodeventa',
+                    name: 'puntodeventa',
+                    component: () => import('@/views/uikit/PuntoDeVenta.vue')
+                },
+                {
                     path: '/uikit/input',
                     name: 'input',
                     component: () => import('@/views/uikit/InputDoc.vue')

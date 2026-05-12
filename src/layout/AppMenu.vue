@@ -28,6 +28,11 @@ const model = ref([
                 to: '/uikit/democlientes'
             },
             {
+                label: 'Punto de Venta',
+                icon: 'pi pi-fw pi-shopping-cart',
+                to: '/uikit/puntodeventa'
+            },
+            {
                 label: 'Input',
                 icon: 'pi pi-fw pi-check-square',
                 to: '/uikit/input'
