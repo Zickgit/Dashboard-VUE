@@ -29,6 +29,26 @@ const router = createRouter({
                     component: () => import('@/views/uikit/PuntoDeVenta.vue')
                 },
                 {
+                    path: '/uikit/apidatatable',
+                    name: 'apidatatable',
+                    component: () => import('@/views/uikit/ApiDataTable.vue')
+                },
+                {
+                    path: '/uikit/stockchart',
+                    name: 'stockchart',
+                    component: () => import('@/views/uikit/StockChart.vue')
+                },
+                {
+                    path: '/repoEmpleados',
+                    name: 'repoEmpleados',
+                    component: () => import('@/views/pages/repoEmpleados.vue')
+                },
+                {
+                    path: '/repoGrafica',
+                    name: 'repoGrafica',
+                    component: () => import('@/views/pages/repoGrafica.vue')
+                },
+                {
                     path: '/uikit/input',
                     name: 'input',
                     component: () => import('@/views/uikit/InputDoc.vue')

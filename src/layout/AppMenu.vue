@@ -33,6 +33,26 @@ const model = ref([
                 to: '/uikit/puntodeventa'
             },
             {
+                label: 'API DataTable',
+                icon: 'pi pi-fw pi-database',
+                to: '/uikit/apidatatable'
+            },
+            {
+                label: 'Gráficas API',
+                icon: 'pi pi-fw pi-chart-line',
+                to: '/uikit/stockchart'
+            },
+            {
+                label: 'Empleados',
+                icon: 'pi pi-table',
+                to: '/repoEmpleados'
+            },
+            {
+                label: 'Graficas',
+                icon: 'pi pi-chart-line',
+                to: '/repoGrafica'
+            },
+            {
                 label: 'Input',
                 icon: 'pi pi-fw pi-check-square',
                 to: '/uikit/input'
